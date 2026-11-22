@@ -1,0 +1,13 @@
+name = "nova-worker"
+main = "_worker.js"
+compatibility_date = "2025-11-04"
+keep_vars = true
+
+# Base URL of the static panel (Panel/). Optional: when unset, the Worker
+# defaults to https://nova-panel.github.io.
+# [vars]
+# PANEL_URL = "https://nova-panel.github.io"
+
+#[[kv_namespaces]]
+#binding = "KV"			# KV binding name (do not rename)
+#id = ""				# KV database id

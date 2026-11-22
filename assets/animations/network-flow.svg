@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 130" role="img" aria-label="Animated network flow">
+<defs><linearGradient id="line" x1="0" x2="1"><stop stop-color="#9d4efb"/><stop offset=".5" stop-color="#02cdf3"/><stop offset="1" stop-color="#9d4efb"/></linearGradient></defs>
+<rect width="900" height="130" rx="18" fill="#080f24"/>
+<path d="M70 65H830" stroke="#263957" stroke-width="3" stroke-linecap="round"/>
+<path d="M70 65H830" stroke="url(#line)" stroke-width="3" stroke-dasharray="12 18" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="0" to="-120" dur="3s" repeatCount="indefinite"/></path>
+<g fill="#07172d" stroke="#02cdf3" stroke-width="2"><circle cx="100" cy="65" r="24"/><circle cx="450" cy="65" r="24"/><circle cx="800" cy="65" r="24"/></g>
+<g fill="#eaf7ff" font-family="Arial,sans-serif" font-size="14" text-anchor="middle"><text x="100" y="105">CLIENT</text><text x="450" y="105">NOVA WORKER</text><text x="800" y="105">INTERNET</text></g>
+<g fill="#02cdf3"><circle r="5"><animateMotion dur="3s" repeatCount="indefinite" path="M100 65H800"/></circle><circle r="5"><animateMotion dur="3s" begin="1.5s" repeatCount="indefinite" path="M800 65H100"/></circle></g>
+</svg>

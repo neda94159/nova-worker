@@ -1,0 +1,50 @@
+Nova Worker — Changelog
+=======================
+
+## [Beta-0.0.1] - 2026-10-08
+
+First public release of Nova Worker.
+
+### Panel
+
+- Rebranded the whole panel to Nova Worker (title, logo alt, manifest, footers, demo data).
+- Single-file admin panel: `Panel/admin/index.html`.
+- Simplified dashboard: the quick-links and recent-activity cards are gone; the cards are always expanded (no collapse button).
+- About card now shows the panel version `Beta-0.0.1` and the release date `Aban 1405`.
+- The panel version label follows the highest version it finds: it reads the Worker's `/version` and the `Version` constant from the GitHub source, so a newer Cloudflare deployment or a newer GitHub release is reflected without editing the panel.
+- Persian (RTL), English and Russian, switchable from the sidebar and remembered in the browser.
+- Light theme only, inline SVG icons, no emoji.
+- Login and install pages rebuilt in the same visual language.
+- `Panel/index.html` is an entry page: on the static host it asks for the Worker domain and remembers it, elsewhere it forwards to `/admin`.
+- Demo data, subscription sample and version file cleaned up for the new brand.
+- Sessions end after 30 minutes without activity or as soon as the browser closes. The panel shows a 3-second countdown, then signs out and returns to the login page with a short notice.
+- The dashboard no longer shows the status and quick-access cards; only the network and latency cards remain.
+- The random IP count in «Preferred IP source» can now be set from 1 to 999 (it was capped at 99); a value stored at the old cap of 99 is shown as 999 and saved as 999.
+- First login shows a one-time user-mode popup with two choices: beginner (personal/family use, about 4 users) and advanced (special settings, more than 5 users). The choice is saved in the Worker config KV as `PanelMode` (`"beginner"` or `"advanced"`), so it is asked only once and applies to every browser.
+- Beginner mode keeps only Dashboard, Links, Network settings (Subscription basics, Preferred IP source, Protocol & transport) and About; the other nav items and cards are hidden. Advanced mode shows the full panel.
+- About has a "Change user mode" card whose button always points to the other mode ("Switch to beginner" / "Switch to advanced"); the new choice is written back to the Worker KV (`PanelMode`) and never changes subscriptions or node settings.
+- The first-run popup cannot be dismissed with Escape or a backdrop click, so a mode is always chosen.
+- The subscription converter no longer downloads its preset lists from remote Chinese JSON files. The SubConverter backend list, the Clash rule (SUBCONFIG) presets and the path-template presets are now built into the panel with English labels, so the converter works even when GitHub is filtered. The generated URLs are unchanged.
+
+### Worker
+
+- Default panel address is `https://nova-panel.github.io`; `PANEL_URL` (variable or install setting) and the `ASSETS` binding override it.
+- Panel static files (logo, manifest, QR script, Leaflet, fonts) are proxied through the Worker domain, so the panel renders correctly at `/admin`, `/login` and `/install`.
+- When the panel cannot be reached, the Worker answers with a localized Nova Worker page instead of the upstream Chinese page.
+- JSON error messages returned to the panel are in English.
+- Panel responses are cached at the Cloudflare edge (HTML 5 minutes, static assets 1 hour), so switching between `/admin`, `/login` and `/install` no longer waits for GitHub Pages every time. Measured: 1.2 s cold → 4 ms warm.
+- Panel data routes (`config.json`, `log.json`, `check`, `getADDAPI`, `getCloudflareUsage`) are never cached.
+- Panel paths are normalized before fetching, so hosts that redirect `/install` → `/install/` do not cost an extra round trip.
+- Admin sessions use a session cookie (no `Max-Age`) plus a server-side issue time: closing the browser or 30 minutes without activity forces a new login. `/admin` always requires a valid session; data routes answer `401` with `{success:false,error:'unauthorized',reason}`.
+- Generated nodes are named `Nova Worker-Free service 1`, `Nova Worker-Free service 2`, … in the panel link and in the local subscription.
+- Remaining upstream identifiers are gone: subscription user-agents and the subscription profile name now use `Nova Worker` and `https://github.com/IRNova/NovaWorker`.
+- The Worker reports its public version `Beta-0.0.1` from `/version`; the build timestamp stays in `Build` for the subscription user-agent.
+
+### Performance
+
+- Vazirmatn is now self-hosted at `Panel/fonts/vazirmatn-var.woff2` (OFL, one variable file for weights 100–900) with `font-display: swap` and a preload hint. The render-blocking `fonts.googleapis.com` stylesheet is gone, which was the main reason pages stalled in Iran.
+
+### Links
+
+- Panel source: https://github.com/Nova-Panel/nova-panel.github.io
+- Worker source: https://github.com/IRNova/NovaWorker
